@@ -26,6 +26,13 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Widget> marcadorDePontos = [
+    Icon(Icons.check, color: Colors.green),
+    Icon(Icons.close, color: Colors.red),
+    Icon(Icons.check, color: Colors.green),
+    Icon(Icons.close, color: Colors.red),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -60,6 +67,11 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
+                setState(() {
+                  marcadorDePontos.add(
+                    Icon(Icons.check, color: Colors.green),
+                  );
+                });
                 //O usuário clica no botão verdadeiro.
               },
             ),
@@ -85,7 +97,9 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
-        Row(), // marcador de pontos
+        Row(
+          children: marcadorDePontos,
+        ), // marcador de pontos
       ],
     );
   }
