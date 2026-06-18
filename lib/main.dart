@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:quizapp/helper.dart';
 
 void main() {
   runApp(QuizApp());
 }
+
+Helper helper = Helper();
 
 class QuizApp extends StatelessWidget {
   @override
@@ -26,12 +29,33 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Widget> marcadorDePontos = [
-    Icon(Icons.check, color: Colors.green),
-    Icon(Icons.close, color: Colors.red),
-    Icon(Icons.check, color: Colors.green),
-    Icon(Icons.close, color: Colors.red),
-  ];
+  List<Widget> marcadorDePontos = [];
+
+  int numeroDaQuestaoAtual = 0;
+  int Contador = 0;
+  void acaoResposta(bool status) {
+    setState(() {
+      if (Contador == numeroDaQuestaoAtual) {
+        if (helper
+                .perguntas[numeroDaQuestaoAtual]
+                .resposta ==
+            status) {
+          marcadorDePontos.add(
+            Icon(Icons.check, color: Colors.green),
+          );
+        } else {
+          marcadorDePontos.add(
+            Icon(Icons.close, color: Colors.red),
+          );
+        }
+        if (numeroDaQuestaoAtual <
+            helper.perguntas.length - 1) {
+          numeroDaQuestaoAtual++;
+        }
+        Contador++;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +69,9 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'As perguntas serão exibidas aqui!!!',
+                helper
+                    .perguntas[numeroDaQuestaoAtual]
+                    .pergunta,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 25.0),
               ),
@@ -67,12 +93,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                setState(() {
-                  marcadorDePontos.add(
-                    Icon(Icons.check, color: Colors.green),
-                  );
-                });
-                //O usuário clica no botão verdadeiro.
+                acaoResposta(true);
               },
             ),
           ),
@@ -92,7 +113,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                //O usuário clica no botão falso.
+                acaoResposta(false);
               },
             ),
           ),
@@ -104,9 +125,3 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 }
-
-/*
-pergunta1: 'O metrô é um dos meios de transporte mais seguros do mundo', verdadeiro,
-pergunta2: 'A culinária brasileira é uma das melhores do mundo.', verdadeiro,
-pergunta3: 'Vacas podem voar, assim como peixes utilizam os pés para andar.', falso,
-*/
