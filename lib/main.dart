@@ -92,7 +92,11 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
-        Row(children: helper.mostrarStatus()),
+        Wrap(
+          spacing: 0.8,
+          runSpacing: 0.4,
+          children: helper.mostrarStatus(),
+        ),
       ],
     );
   }
