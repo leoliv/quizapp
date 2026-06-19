@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:quizapp/helper.dart';
 
+Helper helper = Helper();
+
 void main() {
   runApp(QuizApp());
 }
-
-Helper helper = Helper();
 
 class QuizApp extends StatelessWidget {
   @override
@@ -29,34 +29,6 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Widget> marcadorDePontos = [];
-
-  int numeroDaQuestaoAtual = 0;
-  int Contador = 0;
-  void acaoResposta(bool status) {
-    setState(() {
-      if (Contador == numeroDaQuestaoAtual) {
-        if (helper
-                .perguntas[numeroDaQuestaoAtual]
-                .resposta ==
-            status) {
-          marcadorDePontos.add(
-            Icon(Icons.check, color: Colors.green),
-          );
-        } else {
-          marcadorDePontos.add(
-            Icon(Icons.close, color: Colors.red),
-          );
-        }
-        if (numeroDaQuestaoAtual <
-            helper.perguntas.length - 1) {
-          numeroDaQuestaoAtual++;
-        }
-        Contador++;
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -69,9 +41,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                helper
-                    .perguntas[numeroDaQuestaoAtual]
-                    .pergunta,
+                helper.obterPerguntas(),
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 25.0),
               ),
@@ -93,7 +63,9 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                acaoResposta(true);
+                setState(() {
+                  helper.acaoResposta(true);
+                });
               },
             ),
           ),
@@ -113,14 +85,14 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                acaoResposta(false);
+                setState(() {
+                  helper.acaoResposta(false);
+                });
               },
             ),
           ),
         ),
-        Row(
-          children: marcadorDePontos,
-        ), // marcador de pontos
+        Row(children: helper.mostrarStatus()),
       ],
     );
   }
