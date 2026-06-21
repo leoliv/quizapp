@@ -64,7 +64,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 setState(() {
-                  helper.acaoResposta(true);
+                  helper.acaoResposta(context, true);
                 });
               },
             ),
@@ -86,7 +86,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 setState(() {
-                  helper.acaoResposta(false);
+                  helper.acaoResposta(context, false);
                 });
               },
             ),
@@ -95,7 +95,7 @@ class _QuizPageState extends State<QuizPage> {
         Wrap(
           spacing: 0.8,
           runSpacing: 0.4,
-          children: helper.mostrarStatus(),
+          children: helper.mostrarStatus,
         ),
       ],
     );

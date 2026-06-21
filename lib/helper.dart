@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:quizapp/perguntas.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Helper {
   int _numeroDaQuestaoAtual = 0;
-  int _contador = 0;
   final List<Widget> _marcadorDePontos = [];
   final List<Perguntas> _perguntas = [
     Perguntas(
@@ -67,25 +67,30 @@ class Helper {
     return _perguntas[_numeroDaQuestaoAtual].resposta;
   }
 
-  void acaoResposta(bool status) {
-    if (_contador == _numeroDaQuestaoAtual) {
-      if (obterResposta() == status) {
-        _marcadorDePontos.add(
-          Icon(Icons.check, color: Colors.green),
-        );
-      } else {
-        _marcadorDePontos.add(
-          Icon(Icons.close, color: Colors.red),
-        );
-      }
-      if (_numeroDaQuestaoAtual < _perguntas.length - 1) {
-        _numeroDaQuestaoAtual++;
-      }
-      _contador++;
+  void acaoResposta(BuildContext context, bool status) {
+    if (obterResposta() == status) {
+      _marcadorDePontos.add(
+        Icon(Icons.check, color: Colors.green),
+      );
+    } else {
+      _marcadorDePontos.add(
+        Icon(Icons.close, color: Colors.red),
+      );
+    }
+    if (_numeroDaQuestaoAtual < _perguntas.length - 1) {
+      _numeroDaQuestaoAtual++;
+    }
+
+    if (_marcadorDePontos.length > _perguntas.length) {
+      Alert(
+        context: context,
+        title: "Fim do Quiz!",
+        desc: "Você respondeu todas as perguntas.",
+      ).show();
+      _numeroDaQuestaoAtual = 0;
+      _marcadorDePontos.clear();
     }
   }
 
-  List<Widget> mostrarStatus() {
-    return _marcadorDePontos;
-  }
+  List<Widget> get mostrarStatus => _marcadorDePontos;
 }
